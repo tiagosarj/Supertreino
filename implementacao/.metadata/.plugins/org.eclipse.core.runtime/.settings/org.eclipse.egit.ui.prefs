@@ -1,0 +1,5 @@
+#Wed Nov 20 00:56:15 GMT-03:00 2013
+show_initial_config_dialog=false
+eclipse.preferences.version=1
+org.eclipse.egit.ui.internal.push.SimpleConfigurePushDialog_ADVANCED_MODE=true
+show_home_drive_warning=always

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Super Treino</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_atleta_add">Dados do Atleta</string>
+    <string name="nome_atleta">Nome</string>
+    <string name="login_atleta">Login</string>
+    <string name="senha_atleta">Senha</string>
+    <string name="peso_atleta">Peso</string>
+    <string name="altura_atleta">Altura</string>
+    <string name="nascimento_atleta">Nascimento</string>
+    <string name="genero_atleta">Gênero</string>
+    <string name="bt_salvar">Salvar</string>
+    <string name="title_activity_dietas">Dados de Dieta</string>
+    <string name="radBtFeminino">Feminino</string>
+    <string name="radBtMasculino">Masculino</string>
+    <string name="txtEmailAtleta">Email</string>
+    <string name="txtAltura"></string>
+    <string name="inputAltura"></string>
+    <string name="btHome"></string>
+    <string name="title_activity_dieta_add">Adicionar Dieta</string>
+    <string name="lbAddDieta">Adicionar Dieta</string>
+    <string name="lbRefeicao">Refeição</string>
+    <string name="linha"></string>
+    <string name="lbAlimentos">Alimentos</string>
+    <string name="lbAlimento">Alimento</string>
+    <string name="title_activity_add_edit_alimento">AddEditAlimentoActivity</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+    <string name="title_nome">Nome</string>
+    <string name="title_fonte">Fonte</string>
+    <string name="title_carboidrato">Carboidrato</string>
+    <string name="title_proteina">Proteína</string>
+    <string name="title_gordura">Gordura</string>
+    <string name="title_calorias">Calorias</string>
+    <string name="title_gramas">grs</string>
+    <string name="salvar">Salvar</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_alimentacao">AlimentacaoActivity</string>
+    <string name="bt_alimentacao">Alimentação</string>
+    <string name="bt_dietas">Dietas</string>
+    <string name="bt_alimentos">Alimentos</string>
+    <string name="lbQnt">Quantidade</string>
+    <string name="txtQnt">g/unid</string>
+    <string name="btAdd"></string>
+    <string name="tbColName">Nome</string>
+    <string name="lbFonte">Fonte</string>
+    <string name="lbCHO">CHO</string>
+    <string name="lbColFonte">Fonte</string>
+    <string name="lbColCHO">CHO</string>
+    <string name="lbColNome">Nome</string>
+    <string name="lbColPTN">"   PTN"</string>
+
+</resources>
