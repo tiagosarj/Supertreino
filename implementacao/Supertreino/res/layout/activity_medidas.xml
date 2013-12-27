@@ -24,7 +24,7 @@
                 android:text="Inicio" />
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/txtNome"
                 android:layout_width="66dp"
                 android:layout_height="wrap_content"
                 android:ems="10" >

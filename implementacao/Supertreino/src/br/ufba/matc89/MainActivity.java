@@ -1,5 +1,6 @@
 package br.ufba.matc89;
 
+import br.ufba.matc89.controller.UsuarioController;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -149,6 +150,8 @@ public class MainActivity extends Activity {
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 			
+			setUsuario();
+			
 			Intent it = new Intent(this, AtletaAddActivity.class);
 			startActivity(it);
 		}
@@ -241,6 +244,12 @@ public class MainActivity extends Activity {
 		protected void onCancelled() {
 			mAuthTask = null;
 			showProgress(false);
-		}
+		}		
+	}
+	
+	protected void setUsuario(){
+		UsuarioController.usuario.setLogin(mEmail);
+		UsuarioController.usuario.setSenha(mPassword);
+		UsuarioController.usuario.setEmail(mEmail);
 	}
 }

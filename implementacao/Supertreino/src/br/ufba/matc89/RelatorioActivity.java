@@ -34,5 +34,9 @@ public class RelatorioActivity extends Activity {
 		Intent it = new Intent(this, HomeActivity.class);
 		startActivity(it);
 	}
+	
+	public void calcularIMC(){
+		
+	}
 
 }

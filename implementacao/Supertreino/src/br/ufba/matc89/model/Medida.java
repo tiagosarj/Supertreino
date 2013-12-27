@@ -2,7 +2,7 @@ package br.ufba.matc89.model;
 
 import java.util.Date;
 
-public class Medida {
+public class Medida extends Entity{
 	
 	private Integer peso;
 	private Integer altura;

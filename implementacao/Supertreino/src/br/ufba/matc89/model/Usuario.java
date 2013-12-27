@@ -1,6 +1,6 @@
 package br.ufba.matc89.model;
 
-public class Usuario {
+public class Usuario extends Entity{
 	private String nome;
 	private String login;
 	private String senha;

@@ -28,7 +28,7 @@
                 android:text="@string/nome_atleta" />
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/txtNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -61,19 +61,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/txtEmailAtleta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txtEmailAtleta" />
-
-            <EditText
-                android:id="@+id/txtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
         </LinearLayout>
         
 
@@ -94,14 +81,14 @@
 	    android:orientation="horizontal" >
         
             <RadioButton
-                android:id="@+id/radioButton1"
+                android:id="@+id/rd_masculino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radBtMasculino" 
-				android:checked="true" />
+                android:checked="true"
+                android:text="@string/radBtMasculino" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/rd_feminino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/radBtFeminino" />
@@ -120,7 +107,7 @@
                 android:text="@string/peso_atleta" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/txtPeso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Atleta extends Usuario{
 
+	private int genero;
 	private Medida medidaAtual;
 	private List<Medida> historicoMedidas;
 	private List<Ciclo> ciclos;
@@ -43,6 +44,14 @@ public class Atleta extends Usuario{
 	}
 	public void setHistoricoDietas(List<Dieta> historicoDietas) {
 		this.historicoDietas = historicoDietas;
+	}
+
+	public int getGenero() {
+		return genero;
+	}
+
+	public void setGenero(int genero) {
+		this.genero = genero;
 	}
 	
 }
