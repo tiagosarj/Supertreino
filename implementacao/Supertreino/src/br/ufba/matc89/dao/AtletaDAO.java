@@ -10,13 +10,7 @@ import br.ufba.matc89.model.Genero;
 public class AtletaDAO extends GenericDAO {
 	public static Atleta atletaLogado = new Atleta("");
 	static{
-		TABLE_NAME = "atleta";
-		SQL_COMMAND_DELETE = "drop table if exists atleta";
-		SQL_COMMAND_CREATE[0] = "create table atleta ( "
-							+"id integer primary key autoincrement,"
-							+"id_usuario integer foreign key references usuario(id) ,"
-							+"genero char(9) not null"
-							+")";
+		TABLE_NAME = "atleta";		
 	}
 	
 	public AtletaDAO(Context ctx){

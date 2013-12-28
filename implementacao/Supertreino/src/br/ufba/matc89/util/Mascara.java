@@ -15,8 +15,7 @@ public abstract class Mascara {
             boolean isAlterado;
             String old = "";
  
-            public void onTextChanged(CharSequence s, int start, int before,
-                    int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String str = Mascara.removerCaracteres(s.toString());
                 String mascara = "";
                 if (isAlterado) {

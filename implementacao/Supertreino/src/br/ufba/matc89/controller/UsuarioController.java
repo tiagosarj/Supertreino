@@ -31,8 +31,5 @@ public class UsuarioController extends Activity implements Controller{
 	public void getList(String[] where) {
 		// TODO Auto-generated method stub
 		
-	}
-
-
-	
+	}	
 }

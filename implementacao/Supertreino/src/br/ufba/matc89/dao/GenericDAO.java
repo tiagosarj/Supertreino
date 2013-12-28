@@ -1,5 +1,8 @@
 package br.ufba.matc89.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.ufba.matc89.util.ErroUtil;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,20 +11,50 @@ import android.util.Log;
 
 public abstract class GenericDAO extends SQLiteOpenHelper{
 	
-	protected static final int DB_VERSION = 5;
+	protected static final int DB_VERSION = 9;
 	
 	protected static final String DB_NAME = "supertreino";
 	
-	protected static String SQL_COMMAND_DELETE;
-	protected static String[] SQL_COMMAND_CREATE; 
-	protected static String TABLE_NAME;
-	
+	protected static List<String> SQL_COMMAND_DELETE;
+	protected static List<String> SQL_COMMAND_CREATE; 
+	protected static String TABLE_NAME;	
 	
 	
 	protected SQLiteDatabase db;
-	 
 	
-	public GenericDAO(Context context, String name, int version, String[] sqlCreate, String sqlDelete) {
+	static{
+		SQL_COMMAND_DELETE = new ArrayList<String>();
+		SQL_COMMAND_CREATE = new ArrayList<String>();
+		
+		SQL_COMMAND_DELETE.add("drop table if exists usuario");
+		SQL_COMMAND_CREATE.add("create table usuario ( "
+							+"id integer primary key autoincrement,"	
+							+"nome text not null,"
+							+"login text not null,"
+							+"senha text not null,"
+							+"email text not null"
+							+")");
+		SQL_COMMAND_DELETE.add("drop table if exists atleta");
+		SQL_COMMAND_CREATE.add("create table atleta("
+							+"id integer primary key autoincrement,"
+							+"id_usuario integer not null,"
+							+"genero text not null,"
+							+"foreign key(id_usuario) references usuario(id)"							
+							+")");
+		SQL_COMMAND_DELETE.add("drop table if exists medida");
+		SQL_COMMAND_CREATE.add("create table medida ("
+							+"id integer primary key autoincrement,"
+							+"id_atleta integer not null,"
+							+"peso integer,"
+							+"altura integer,"
+							+"cintura integer,"
+							+"quadril integer,"
+							+"data_afericao date,"
+							+"foreign key(id_atleta) references atleta(id)"
+							+")");
+	}
+	
+	public GenericDAO(Context context, String name, int version, List<String> sqlCreate, List<String> sqlDelete) {
 		
 		super(context, name, null, version);
 		
@@ -41,10 +74,10 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.i("Generic", "Criacao do banco");
-		int qntCommandsSql = SQL_COMMAND_CREATE.length;
 		
-		for(int i = 0; i < qntCommandsSql; i++){
-			String cmd = SQL_COMMAND_CREATE[i];
+		
+		for(int i = 0; i < SQL_COMMAND_CREATE.size(); i++){
+			String cmd = SQL_COMMAND_CREATE.get(i);
 			
 			Log.i("Generic", cmd);
 			db.execSQL(cmd);
@@ -56,12 +89,13 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		String txtLog = "Atualizando da versao "+oldVersion+ " para a versao "+newVersion;
-		Log.w("Generic", txtLog);
-		Log.i("Generic", SQL_COMMAND_DELETE);
 		
-		db.execSQL(SQL_COMMAND_DELETE);
-		
-		onCreate(db);
+		for (int j = 0; j < SQL_COMMAND_DELETE.size(); j++) {
+			Log.w("Generic", txtLog);
+			Log.i("Generic", SQL_COMMAND_DELETE.get(j));
+			db.execSQL(SQL_COMMAND_DELETE.get(j));
+		}
+		onCreate(db);		
 	}
 	
 	protected void setErro(String msg, String local){

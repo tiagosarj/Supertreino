@@ -9,17 +9,7 @@ public class UsuarioDAO extends GenericDAO{
 	public static Usuario usuarioLogado =  new Usuario();
 	
 	static{ 
-		//add breakpoint aqui
-		TABLE_NAME = "usuario";
-		SQL_COMMAND_DELETE = "drop table if exists usuario";
-		SQL_COMMAND_CREATE = new String[]{"create table usuario ( "
-							+"id integer primary key autoincrement,"	
-							+"nome text not null,"
-							+"login text not null,"
-							+"senha text not null,"
-							+"email text not null"
-							+")"};
-		
+		TABLE_NAME = "usuario";		
 	}
 	
 	public UsuarioDAO(Context ctx){

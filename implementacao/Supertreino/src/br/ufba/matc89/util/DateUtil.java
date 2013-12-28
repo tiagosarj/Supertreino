@@ -21,7 +21,7 @@ public class DateUtil extends Activity{
 		
 		Locale locale = new Locale("pt", "BR");
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", locale);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", locale);
 		
 		dataSimples = sdf.format(data);			
 			
