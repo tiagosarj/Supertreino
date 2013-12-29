@@ -5,7 +5,8 @@ import br.ufba.matc89.dao.UsuarioDAO;
 import br.ufba.matc89.model.Usuario;
 
 public class Security extends Activity{
-	
+	private static Usuario usuarioLogado;
+
 	public boolean logar(Usuario usuario){
 		boolean validado = false;
 		
@@ -20,7 +21,11 @@ public class Security extends Activity{
 		return validado;
 	}
 	
-	private void setUsuarioLogado(Usuario usuario){
-		UsuarioDAO.usuarioLogado = usuario;
+	public static void setUsuarioLogado(Usuario usuario){
+		usuarioLogado = usuario;
+	}
+	
+	public static Usuario getUsuarioLogado(){
+		return usuarioLogado;
 	}
 }

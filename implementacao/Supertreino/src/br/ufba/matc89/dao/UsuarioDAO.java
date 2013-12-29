@@ -2,11 +2,10 @@ package br.ufba.matc89.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import br.ufba.matc89.controller.Security;
 import br.ufba.matc89.model.Usuario;
 
 public class UsuarioDAO extends GenericDAO{
-	
-	public static Usuario usuarioLogado =  new Usuario();
 	
 	static{ 
 		TABLE_NAME = "usuario";		
@@ -46,9 +45,12 @@ public class UsuarioDAO extends GenericDAO{
 		
 		//caso o usuário seja adicionado na tabela, passará a ser o usuário logado.
 		if(id > 0){
+			Usuario usuarioLogado = new Usuario();
+			
 			usuarioLogado = usuario;
 			usuarioLogado.setSenha("");
 			usuarioLogado.setId(id);
+			Security.setUsuarioLogado(usuarioLogado);
 			sucess = true;
 		}else{
 			setErro("Erro no banco. Os dados de usuario não foram salvos", "insert");

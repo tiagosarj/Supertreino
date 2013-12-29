@@ -3,7 +3,6 @@ package br.ufba.matc89.controller;
 import android.app.Activity;
 import android.content.Context;
 import br.ufba.matc89.dao.AtletaDAO;
-import br.ufba.matc89.dao.UsuarioDAO;
 import br.ufba.matc89.model.Atleta;
 
 public class AtletaController extends Activity implements Controller{
@@ -13,7 +12,7 @@ public class AtletaController extends Activity implements Controller{
 		boolean sucess = false;
 		AtletaDAO dAtleta = new AtletaDAO(ctx);
 		
-		if(dAtleta.save(atleta, UsuarioDAO.usuarioLogado.getId())){
+		if(dAtleta.save(atleta, Security.getUsuarioLogado().getId())){
 			
 			MedidaController medidaControl = new MedidaController();
 			sucess = medidaControl.save(ctx);
