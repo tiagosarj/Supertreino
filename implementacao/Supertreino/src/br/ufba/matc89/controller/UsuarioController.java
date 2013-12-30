@@ -24,14 +24,12 @@ public class UsuarioController extends Activity implements Controller{
 
 	@Override
 	public void get(long id) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
 	public void getList(String[] where) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}	
 	
 	public boolean validarUsuario(Context ctx){
