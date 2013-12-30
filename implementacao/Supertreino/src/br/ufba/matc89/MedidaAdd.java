@@ -16,7 +16,7 @@ public class MedidaAdd extends Activity {
 	//	final EditText dataNascimento = (EditText) findViewById(R.id.txtNascimento);
 	//	nascimentoMask = Mascara.aplicarMascara("##/##/####", dataNascimento);
 	//	dataNascimento.addTextChangedListener(nascimentoMask);
-		
+	//  ......... testando conflito	
 		findViewById(R.id.salvar).setOnClickListener(
 				new View.OnClickListener() {
 					@Override

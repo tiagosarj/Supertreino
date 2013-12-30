@@ -46,11 +46,13 @@ public class AtletaController extends Activity implements Controller{
 	 * problemas = )
 	 */
 	public Atleta montar(Context ctx){
+		
 		Atleta atleta = get(ctx);
 		
 		MedidaController medidaControl = new MedidaController();
 		
-		medidaControl.get(atleta);	
+		atleta.setHistoricoMedidas(medidaControl.get(atleta, ctx));	
+		
 		
 		return atleta;
 	}

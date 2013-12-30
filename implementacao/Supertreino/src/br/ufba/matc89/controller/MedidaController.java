@@ -1,5 +1,7 @@
 package br.ufba.matc89.controller;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import br.ufba.matc89.dao.AtletaDAO;
@@ -32,8 +34,10 @@ public class MedidaController extends Activity implements Controller{
 		// TODO Auto-generated method stub
 		
 	}
-	public void get(Atleta atleta) {
+	public List<Medida> get(Atleta atleta, Context ctx) {
 		
-		
+		MedidaDAO daoMedida = new MedidaDAO(ctx);
+		List<Medida> medidas = daoMedida.getList(atleta);
+		return medidas;
 	}
 }

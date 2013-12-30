@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import br.ufba.matc89.model.Atleta;
 import br.ufba.matc89.model.Medida;
 import br.ufba.matc89.model.Usuario;
 import br.ufba.matc89.util.DateUtil;
@@ -82,9 +83,19 @@ public class MedidaDAO extends GenericDAO{
 		return medidas;
 	}
 	
+	public List<Medida> getList(Atleta atleta){
+		
+		List<Medida> medidas = new ArrayList<Medida>();
+		String where = "id_atleta="+atleta.getId();
+		medidas = getList(where);
+				
+		return medidas;
+	}
+	
 	
 	private Medida getMedidaByRegistro(Cursor c){
 		Medida medida = new Medida(0,0);
+		
 		
 		return medida;
 	}
