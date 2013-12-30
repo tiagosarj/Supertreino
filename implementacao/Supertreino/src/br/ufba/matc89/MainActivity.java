@@ -1,6 +1,5 @@
 package br.ufba.matc89;
 
-import br.ufba.matc89.controller.UsuarioController;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import br.ufba.matc89.controller.UsuarioController;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -151,9 +152,22 @@ public class MainActivity extends Activity {
 			mAuthTask.execute((Void) null);
 			
 			setUsuario();
-			
-			Intent it = new Intent(this, AtletaAddActivity.class);
-			startActivity(it);
+			if(UsuarioController.jaTemUsuario(this)){
+				if(validarLogin()){
+					
+					Intent it = new Intent(this, AtletaAddActivity.class);
+					startActivity(it);
+				}else{
+					Toast.makeText(this, "Informações incorretas",
+					Toast.LENGTH_LONG).show();					
+				}
+			}else{
+				Toast.makeText(this, "Criando usuário...",
+						Toast.LENGTH_LONG).show();
+				
+				Intent it = new Intent(this, AtletaAddActivity.class);
+				startActivity(it);
+			}			
 		}
 	}
 
@@ -251,5 +265,15 @@ public class MainActivity extends Activity {
 		UsuarioController.usuario.setLogin(mEmail);
 		UsuarioController.usuario.setSenha(mPassword);
 		UsuarioController.usuario.setEmail(mEmail);
+	}
+	
+	protected boolean validarLogin(){
+		boolean valido = false;
+		UsuarioController controlUser = new UsuarioController();
+		if(controlUser.validarUsuario(this)){
+			valido = true;
+		}
+		
+		return valido;
 	}
 }

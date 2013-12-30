@@ -9,6 +9,7 @@ public class UsuarioController extends Activity implements Controller{
 
 	public static Usuario usuario = new Usuario();	
 	
+	
 	@Override
 	public boolean save(Context ctx){
 		boolean sucess = false;
@@ -32,4 +33,27 @@ public class UsuarioController extends Activity implements Controller{
 		// TODO Auto-generated method stub
 		
 	}	
+	
+	public boolean validarUsuario(Context ctx){
+		boolean valido = false;
+				
+		if(jaTemUsuario(ctx) && Security.logar(usuario, ctx)){
+			valido = true;
+		}
+		
+		return valido;
+	}
+	
+	public static boolean jaTemUsuario(Context ctx){
+		boolean existe = false;
+		UsuarioDAO dUsuario = new UsuarioDAO(ctx);
+		
+		if(dUsuario.existeUsuario())
+		{
+			existe = true;
+		}	
+		
+		return existe;
+	}	
+	
 }

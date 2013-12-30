@@ -32,4 +32,26 @@ public class AtletaController extends Activity implements Controller{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public Atleta get(Context ctx){
+		
+		AtletaDAO dAtleta = new AtletaDAO(ctx);		
+		Atleta atleta = dAtleta.getByIdUsuario();
+		
+		return atleta;
+	}
+	/**
+	 * 
+	 * @return um atleta com todos os atributos setados. Esse método pode resolver todos os seus
+	 * problemas = )
+	 */
+	public Atleta montar(Context ctx){
+		Atleta atleta = get(ctx);
+		
+		MedidaController medidaControl = new MedidaController();
+		
+		medidaControl.get(atleta);	
+		
+		return atleta;
+	}
 }

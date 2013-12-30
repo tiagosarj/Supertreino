@@ -1,10 +1,14 @@
 package br.ufba.matc89.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import br.ufba.matc89.model.Medida;
+import br.ufba.matc89.model.Usuario;
 import br.ufba.matc89.util.DateUtil;
 
 public class MedidaDAO extends GenericDAO{
@@ -59,5 +63,29 @@ public class MedidaDAO extends GenericDAO{
 		
 		
 		return sucess;
+	}
+	
+	public List<Medida> getList(String where){
+		
+		List<Medida> medidas = new ArrayList<Medida>();
+		
+		Cursor c = db.query(TABLE_NAME, null, where, null, null, null, null);
+				
+		if(c.getCount() > 0){
+			c.moveToFirst();
+			for(int i = 0; i < c.getCount(); i++){
+				medidas.add(getMedidaByRegistro(c));
+				c.moveToNext();
+			}
+			c.close();
+		}	
+		return medidas;
+	}
+	
+	
+	private Medida getMedidaByRegistro(Cursor c){
+		Medida medida = new Medida(0,0);
+		
+		return medida;
 	}
 }

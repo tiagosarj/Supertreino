@@ -26,7 +26,6 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 		SQL_COMMAND_DELETE = new ArrayList<String>();
 		SQL_COMMAND_CREATE = new ArrayList<String>();
 		
-		SQL_COMMAND_DELETE.add("drop table if exists usuario");
 		SQL_COMMAND_CREATE.add("create table usuario ( "
 							+"id integer primary key autoincrement,"	
 							+"nome text not null,"
@@ -34,14 +33,14 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 							+"senha text not null,"
 							+"email text not null"
 							+")");
-		SQL_COMMAND_DELETE.add("drop table if exists atleta");
+		
 		SQL_COMMAND_CREATE.add("create table atleta("
 							+"id integer primary key autoincrement,"
 							+"id_usuario integer not null,"
 							+"genero text not null,"
 							+"foreign key(id_usuario) references usuario(id)"							
 							+")");
-		SQL_COMMAND_DELETE.add("drop table if exists medida");
+		
 		SQL_COMMAND_CREATE.add("create table medida ("
 							+"id integer primary key autoincrement,"
 							+"id_atleta integer not null,"
@@ -52,6 +51,10 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 							+"data_afericao date,"
 							+"foreign key(id_atleta) references atleta(id)"
 							+")");
+		
+		SQL_COMMAND_DELETE.add("drop table if exists medida");
+		SQL_COMMAND_DELETE.add("drop table if exists atleta");
+		SQL_COMMAND_DELETE.add("drop table if exists usuario");
 	}
 	
 	public GenericDAO(Context context, String name, int version, List<String> sqlCreate, List<String> sqlDelete) {
@@ -75,16 +78,13 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 	public void onCreate(SQLiteDatabase db) {
 		Log.i("Generic", "Criacao do banco");
 		
-		
 		for(int i = 0; i < SQL_COMMAND_CREATE.size(); i++){
 			String cmd = SQL_COMMAND_CREATE.get(i);
 			
 			Log.i("Generic", cmd);
 			db.execSQL(cmd);
-		}
-		
+		}		
 	}
-
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -102,6 +102,9 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 		ErroUtil.erroMensagem = msg;
 		ErroUtil.erroLocal = local;
 	}
+	
+	
+	
 	
 	
 }

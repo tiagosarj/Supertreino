@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import br.ufba.matc89.dao.AtletaDAO;
 import br.ufba.matc89.dao.MedidaDAO;
+import br.ufba.matc89.model.Atleta;
 import br.ufba.matc89.model.Medida;
 
 public class MedidaController extends Activity implements Controller{
@@ -29,6 +30,10 @@ public class MedidaController extends Activity implements Controller{
 	@Override
 	public void getList(String[] where) {
 		// TODO Auto-generated method stub
+		
+	}
+	public void get(Atleta atleta) {
+		
 		
 	}
 }

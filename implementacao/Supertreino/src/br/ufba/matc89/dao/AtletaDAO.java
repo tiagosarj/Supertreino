@@ -2,9 +2,11 @@ package br.ufba.matc89.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import br.ufba.matc89.controller.Security;
 import br.ufba.matc89.model.Atleta;
 import br.ufba.matc89.model.Genero;
-
+import br.ufba.matc89.util.ErroUtil;
 
 
 public class AtletaDAO extends GenericDAO {
@@ -22,7 +24,8 @@ public class AtletaDAO extends GenericDAO {
 		long id = atleta.getId();
 		
 		if(id > 0){
-			sucess = update(atleta, idUsuario);
+			sucess = (update(atleta, idUsuario)>0);
+			
 		}else{
 			sucess = insert(atleta, idUsuario);
 		}
@@ -56,10 +59,49 @@ public class AtletaDAO extends GenericDAO {
 		return sucess;
 	}
 	
-	public boolean update(Atleta atleta, long idUsuario){
-		boolean sucess = false;
+	public int update(Atleta atleta, long idUsuario){
 		
+		ContentValues values = new ContentValues();
+		values.put("genero", atleta.getGenero());
 		
-		return sucess;
+		String where = "id_usuario=?";
+		String[] whereArgs = new String[]{String.valueOf(idUsuario)};
+		
+		int count = db.update(TABLE_NAME, null, where, whereArgs);
+		
+		if(count <= 0){
+			ErroUtil.erroLocal = "Atualizacao de atleta";
+			ErroUtil.erroMensagem = "Nenhum registro foi atualizado";
+		}
+		
+		return count;
 	}
+	
+	public Atleta getByIdUsuario(){
+		Atleta atleta = new Atleta(" ");
+		String where = "id_usuario='"+Security.getUsuarioLogado().getId()+"'";
+		Cursor c = db.query(true, TABLE_NAME, null, where, null, null, null, null, null);
+		
+		if(c.getCount() > 0){
+			c.moveToFirst();			
+			atleta = getAtletaByRegistro(c);
+		}		
+		return atleta;
+	}
+	
+	private Atleta getAtletaByRegistro(Cursor c){
+		Atleta atleta = new Atleta("");
+		
+		int indexColId = c.getColumnIndex("id");
+		int indexColGenero = c.getColumnIndex("genero");
+		//int indexColIdUsuario = c.getColumnIndex("id_usuario");
+		
+		atleta.setId(c.getInt(indexColId));
+		int genero = (c.getString(indexColGenero).trim().toLowerCase().contains("MA"))?1:2;
+		atleta.setGenero(genero);
+	
+		return atleta;
+	}
+	
+	
 }
