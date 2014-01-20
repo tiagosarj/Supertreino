@@ -1,20 +1,23 @@
 package br.ufba.matc89.model;
 
-public class Alimento {
+public class Alimento extends Entity {
 	protected String nome;
 	protected String fonte;
-	protected Double carboidrado;
+	protected Double carboidrato;
 	protected Double proteina;
 	protected Double gordura;
-	protected Double calorias;
+	protected Double caloria;
+
+	public Alimento(){}
 
 	public Alimento(String nome, String fonte){
+		this.setId(Long.parseLong("-1"));
 		this.nome = nome;
 		this.fonte = fonte;
-		this.carboidrado = 0.0;
+		this.carboidrato = 0.0;
 		this.proteina = 0.0;
 		this.gordura = 0.0;
-		this.calorias = 0.0;
+		this.caloria = 0.0;
 	}
 
 	public String getNome() {
@@ -33,12 +36,12 @@ public class Alimento {
 		this.fonte = fonte;
 	}
 
-	public Double getCarboidrado() {
-		return this.carboidrado;
+	public Double getCarboidrato() {
+		return this.carboidrato;
 	}
 
-	public void setCarboidrado(Double carboidrado) {
-		this.carboidrado = carboidrado;
+	public void setCarboidrato(Double carboidrato) {
+		this.carboidrato = carboidrato;
 	}
 
 	public Double getProteina() {
@@ -57,11 +60,16 @@ public class Alimento {
 		this.gordura = gordura;
 	}
 
-	public Double getCalorias() {
-		return this.calorias;
+	public Double getCaloria() {
+		return this.caloria;
 	}
 
-	public void setCalorias(Double calorias) {
-		this.calorias = calorias;
+	public void setCaloria(Double caloria) {
+		this.caloria = caloria;
+	}
+	
+	@Override
+	public String toString(){
+		return this.nome;
 	}
 }

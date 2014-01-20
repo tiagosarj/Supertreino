@@ -94,15 +94,15 @@ public class AtletaAddActivity extends Activity {
 		}
 		
 		String pesoStr = ((EditText)findViewById(R.id.txtPeso)).getText().toString();
-		Integer peso = null;
+		Float peso = null;
 		if(!pesoStr.equals("")){
-			peso = Integer.valueOf(pesoStr);
+			peso = Float.parseFloat(pesoStr);
 		}
 		
 		String alturaStr = ((EditText)findViewById(R.id.txtAltura)).getText().toString();
-		Integer altura = null;
+		Float altura = null;
 		if(!alturaStr.equals("")){
-			altura = Integer.valueOf(alturaStr);
+			altura = Float.parseFloat(alturaStr);
 		}
 		
 		if(validarCampos()){			
@@ -145,3 +145,40 @@ public class AtletaAddActivity extends Activity {
 	}	
 
 }
+/*// Get the TableLayout
+TableLayout tl = (TableLayout) findViewById(R.id.maintable);
+
+// Go through each item in the array
+for (int current = 0; current < numProvinces; current++)
+{
+    // Create a TableRow and give it an ID
+    TableRow tr = new TableRow(this);
+    tr.setId(100+current);
+    tr.setLayoutParams(new LayoutParams(
+            LayoutParams.FILL_PARENT,
+            LayoutParams.WRAP_CONTENT));   
+
+    // Create a TextView to house the name of the province
+    TextView labelTV = new TextView(this);
+    labelTV.setId(200+current);
+    labelTV.setText(provinces[current]);
+    labelTV.setTextColor(Color.BLACK);
+    labelTV.setLayoutParams(new LayoutParams(
+            LayoutParams.FILL_PARENT,
+            LayoutParams.WRAP_CONTENT));
+    tr.addView(labelTV);
+
+    // Create a TextView to house the value of the after-tax income
+    TextView valueTV = new TextView(this);
+    valueTV.setId(current);
+    valueTV.setText("$0");
+    valueTV.setTextColor(Color.BLACK);
+    valueTV.setLayoutParams(new LayoutParams(
+            LayoutParams.FILL_PARENT,
+            LayoutParams.WRAP_CONTENT));
+    tr.addView(valueTV);
+
+    // Add the TableRow to the TableLayout
+    tl.addView(tr, new TableLayout.LayoutParams(
+            LayoutParams.FILL_PARENT,
+            LayoutParams.WRAP_CONTENT));*/

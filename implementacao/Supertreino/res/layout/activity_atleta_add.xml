@@ -54,7 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10" />
+                android:ems="10"
+                android:inputType="number" />
 
         </LinearLayout>
         
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/lbGenero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genero_atleta" />
@@ -111,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,7 +130,7 @@
                 android:layout_width="106dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="numberDecimal"
                 android:text="@string/inputAltura" />
 
         </LinearLayout>

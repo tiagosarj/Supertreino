@@ -1,11 +1,12 @@
 package br.ufba.matc89.controller;
 
-import android.app.Activity;
+import java.util.List;
+
 import android.content.Context;
 import br.ufba.matc89.dao.UsuarioDAO;
 import br.ufba.matc89.model.Usuario;
 
-public class UsuarioController extends Activity implements Controller{
+public class UsuarioController implements Controller<Usuario>{
 
 	public static Usuario usuario = new Usuario();	
 	
@@ -20,22 +21,14 @@ public class UsuarioController extends Activity implements Controller{
 			sucess = atletaControl.save(ctx);
 		}
 		return sucess;
-	}
-
-	@Override
-	public void get(long id) {
-		// TODO Auto-generated method stub		
-	}
-
-	@Override
-	public void getList(String[] where) {
-		// TODO Auto-generated method stub		
 	}	
 	
 	public boolean validarUsuario(Context ctx){
 		boolean valido = false;
 				
 		if(jaTemUsuario(ctx) && Security.logar(usuario, ctx)){
+			
+			AtletaController.atleta = new AtletaController().get(ctx); 
 			valido = true;
 		}
 		
@@ -52,6 +45,25 @@ public class UsuarioController extends Activity implements Controller{
 		}	
 		
 		return existe;
-	}	
+	}
+
+	@Override
+	public Usuario get(long id, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Usuario get(Usuario entity, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Usuario> getList(Usuario entity, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

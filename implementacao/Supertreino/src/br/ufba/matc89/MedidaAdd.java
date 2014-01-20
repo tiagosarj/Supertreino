@@ -16,10 +16,12 @@ public class MedidaAdd extends Activity {
 	//	final EditText dataNascimento = (EditText) findViewById(R.id.txtNascimento);
 	//	nascimentoMask = Mascara.aplicarMascara("##/##/####", dataNascimento);
 	//	dataNascimento.addTextChangedListener(nascimentoMask);
-	//  ......... testando conflito	
+	//  tesntando subclipse
 		findViewById(R.id.salvar).setOnClickListener(
 				new View.OnClickListener() {
-					@Override
+					@Override			
+					
+
 					public void onClick(View view) {
 						//TODO implementar salvar Atleta
 						openConsultaCorporal();

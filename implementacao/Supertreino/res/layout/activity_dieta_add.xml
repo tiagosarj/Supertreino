@@ -22,18 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lbAddDieta"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
-        
-        
-        
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -50,14 +40,13 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="text" />
+        </LinearLayout>
 
-        </LinearLayout>   
-        
         <LinearLayout
             style="@style/LoginFormContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+            
             <ImageView
                 android:id="@+id/imageView1"
                 style="@style/AppBaseTheme"
@@ -66,78 +55,87 @@
                 android:background="@drawable/linha"
                 android:contentDescription="@string/linha"
                 android:src="@drawable/linha" />
-		
-            </LinearLayout>
-            
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal" >
-			
+
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/lbGenero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lbAlimentos"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        </LinearLayout>   
+        </LinearLayout>
         
-         <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-			
-             <TextView
-                 android:id="@+id/textView4"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="@string/lbAlimento" />
+            android:layout_height="wrap_content" >
 
-             <AutoCompleteTextView
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbAlimento" />
+
+
+             <!-- <AutoCompleteTextView
                  android:id="@+id/alimentos"
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
                  android:completionHint="selecione um alimento"
-                 android:completionThreshold="1" />           
+                 android:completionThreshold="1" /> -->
+                 
+              <Spinner
+                android:id="@+id/cbAlimentos"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawSelectorOnTop="true"
+                android:prompt="@string/txtCb" />
         </LinearLayout>
+		
+		 <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbQnt" />
 
-             <TextView
-                 android:id="@+id/textView5"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="@string/lbQnt" />
+            <EditText
+                android:id="@+id/etQnt"
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/txtQnt"
+                android:textSize="12sp" >
+                
+                <requestFocus />
+            </EditText>
+            
+           		<ImageButton
+                android:id="@+id/imgAdd"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/btAdd"
+                android:src="@drawable/add" />
 
-             <EditText
-                 android:id="@+id/editText2"
-                 android:layout_width="76dp"
-                 android:layout_height="wrap_content"
-                 android:ems="10"
-                 android:inputType="number"
-                 android:text="@string/txtQnt"
-                 android:textColorHint="@style/AppTheme"
-                 android:textSize="12sp" >
+           		<ImageButton
+           		    android:id="@+id/imgSave"
+           		    android:layout_width="50dp"           		   
+           		    android:layout_height="50dp"
+           		    android:contentDescription="@string/btSave"
+           		    android:src="@drawable/bt_save" />
 
-                 <requestFocus />
-             </EditText>
-
-             <ImageButton
-                 android:id="@+id/imageButton1"
-                 android:layout_width="108dp"
-                 android:layout_height="match_parent"
-                 android:contentDescription="@string/btAdd"
-                 android:src="@drawable/add" />
-         </LinearLayout>
-         
-         
-         
-  <!-- ****************************************** TABELA ********************************************* -->       
-         
-         <TableLayout           
-            android:id="@+id/tableLayout1"
+            </LinearLayout>
+        <!-- ****************************************** TABELA ********************************************* -->
+        <TableLayout
+            android:id="@+id/tlAlimentos"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
@@ -152,16 +150,19 @@
 
             <!-- edittext span 2 column -->
 
+
             <!-- just draw a red line -->
-<!-- ********************************* LINHA ********************************* -->
+            <!-- ********************************* LINHA ********************************* -->
+
             <View
+                android:id="@+id/linha1"
                 android:layout_height="2dip"
                 android:background="#FF0000" />
 
             <!-- 3 columns -->
 
             <TableRow
-                android:id="@+id/tableRow3"
+                android:id="@+id/tableRow2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dip" >
@@ -197,33 +198,30 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lbColPTN" />
-
             </TableRow>
 
-<!-- ********************************* LINHA ********************************* -->
-			<View
+            <!-- ********************************* LINHA ********************************* -->
+
+            <View
+                android:id="@+id/linha2"
                 android:layout_height="2dip"
                 android:background="#FF0000" />
-			
-			
+
             <!-- display this button in 3rd column via layout_column(zero based) -->
 
-            <TableRow
-                android:id="@+id/tableRow4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dip" >
-            </TableRow>
+            
 
-            <!-- display this button in 2nd column via layout_column(zero based) -->
+            
 
-            <TableRow
-                android:id="@+id/tableRow5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dip" >
-            </TableRow>
+            
         </TableLayout>
+        <!-- <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:stretchColumns="0,1"
+                android:id="@+id/tbAlimentos" >
+        </TableLayout> -->
+        
     </LinearLayout>
 
 </RelativeLayout>

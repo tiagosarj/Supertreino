@@ -1,5 +1,8 @@
 package br.ufba.matc89.dao;
 
+import java.util.HashMap;
+import java.util.Locale;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -94,10 +97,16 @@ public class AtletaDAO extends GenericDAO {
 		
 		int indexColId = c.getColumnIndex("id");
 		int indexColGenero = c.getColumnIndex("genero");
-		//int indexColIdUsuario = c.getColumnIndex("id_usuario");
+		int indexColIdUsuario = c.getColumnIndex("id_usuario");
 		
 		atleta.setId(c.getInt(indexColId));
-		int genero = (c.getString(indexColGenero).trim().toLowerCase().contains("MA"))?1:2;
+		
+		HashMap<String, Long> foreignKey = new HashMap<String, Long>();
+		foreignKey.put("id_usuario", c.getLong(indexColIdUsuario));
+		atleta.setId_other(foreignKey);
+		
+		Locale locale = new Locale("pt", "BR");
+		int genero = (c.getString(indexColGenero).trim().toLowerCase(locale).contains("MA"))?1:2;
 		atleta.setGenero(genero);
 	
 		return atleta;

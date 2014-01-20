@@ -2,6 +2,7 @@ package br.ufba.matc89.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -9,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import br.ufba.matc89.model.Atleta;
 import br.ufba.matc89.model.Medida;
-import br.ufba.matc89.model.Usuario;
 import br.ufba.matc89.util.DateUtil;
 
 public class MedidaDAO extends GenericDAO{
@@ -37,11 +37,9 @@ public class MedidaDAO extends GenericDAO{
 		boolean sucess = false;
 		
 		ContentValues values = new ContentValues();
+		values = getValues(medida);
 		values.put("id_atleta", idAtleta);
-		values.put("peso", medida.getPeso());
-		values.put("altura", medida.getAltura());
-		values.put("cintura", medida.getCintura());
-		values.put("quadril", medida.getQuadril());
+			
 		if(medida.getDataAfericao() != null){
 			values.put("data_afericao", DateUtil.getDataSimples(medida.getDataAfericao()));
 		}else{
@@ -62,6 +60,17 @@ public class MedidaDAO extends GenericDAO{
 	public boolean update(Medida medida){
 		boolean sucess = false;
 		
+		ContentValues values = new ContentValues();
+		
+		values = getValues(medida);
+		String where = "id=?";
+		String[] whereArgs = new String[]{String.valueOf(medida.getId())};
+		
+		if(db.update(TABLE_NAME, values, where, whereArgs)>0){
+			sucess = true;
+		}else{
+			setErro("Nenhum registro foi atualizado", "Medida.update");			
+		}
 		
 		return sucess;
 	}
@@ -90,13 +99,61 @@ public class MedidaDAO extends GenericDAO{
 		medidas = getList(where);
 				
 		return medidas;
-	}
-	
+	}	
 	
 	private Medida getMedidaByRegistro(Cursor c){
-		Medida medida = new Medida(0,0);
+		Medida medida = new Medida(0f,0f);
+				
+		int indexColId = c.getColumnIndex("id");
+		int indexColIdAtleta = c.getColumnIndex("id_atleta");
+		int indexColPeso = c.getColumnIndex("peso");
+		int indexColAltura = c.getColumnIndex("altura");
+		int indexColCintura = c.getColumnIndex("cintura");
+		int indexColQuadril = c.getColumnIndex("quadril");
+		int indexColSubscapular = c.getColumnIndex("subscapular");
+		int indexColTripicial = c.getColumnIndex("tripicial");
+		int indexColPeitoral = c.getColumnIndex("peitoral");
+		int indexColAxilar_media = c.getColumnIndex("axilar_media");
+		int indexColSupra_iliaca = c.getColumnIndex("supra_iliaca");
+		int indexColAbdominal = c.getColumnIndex("abdominal");
+		int indexColAntebraco = c.getColumnIndex("antebraco");
+		int indexColDataAfericao = c.getColumnIndex("data_afericao");
+		medida.setId(c.getInt(indexColId));
 		
+		HashMap<String, Long> foreignKey = new HashMap<String, Long>();
+		foreignKey.put("id_atleta", c.getLong(indexColIdAtleta));
+		
+		medida.setId_other(foreignKey);
+		medida.setPeso(c.getFloat(indexColPeso));
+		medida.setAltura(c.getFloat(indexColAltura));
+		medida.setCintura(c.getFloat(indexColCintura));
+		medida.setQuadril(c.getFloat(indexColQuadril));
+		medida.setSubscapular(c.getFloat(indexColSubscapular));
+		medida.setTripicial(c.getFloat(indexColTripicial));
+		medida.setPeitoral(c.getFloat(indexColPeitoral));
+		medida.setAxilar_media(c.getFloat(indexColAxilar_media));
+		medida.setSupra_iliaca(c.getFloat(indexColSupra_iliaca));
+		medida.setAbdominal(c.getFloat(indexColAbdominal));
+		medida.setAntebraco(c.getFloat(indexColAntebraco));
+		medida.setDataAfericao(DateUtil.getDate(c.getString(indexColDataAfericao)));
 		
 		return medida;
+	}
+	
+	private ContentValues getValues(Medida medida){
+		ContentValues values = new ContentValues();
+		values.put("peso", medida.getPeso());
+		values.put("altura", medida.getAltura());
+		values.put("cintura", medida.getCintura());
+		values.put("quadril", medida.getQuadril());
+		values.put("subscapular", medida.getSubscapular());
+		values.put("tripicial", medida.getTripicial());
+		values.put("peitoral", medida.getPeitoral());
+		values.put("axilar_media", medida.getAxilar_media());
+		values.put("supra_iliaca", medida.getSupra_iliaca());
+		values.put("abdominal", medida.getAbdominal());
+		values.put("antebraco", medida.getAntebraco());
+		
+		return values;
 	}
 }

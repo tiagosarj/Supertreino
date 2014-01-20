@@ -155,11 +155,13 @@ public class MainActivity extends Activity {
 			if(UsuarioController.jaTemUsuario(this)){
 				if(validarLogin()){
 					
-					Intent it = new Intent(this, AtletaAddActivity.class);
+					Intent it = new Intent(this, RelatorioActivity.class);
 					startActivity(it);
 				}else{
 					Toast.makeText(this, "Informações incorretas",
-					Toast.LENGTH_LONG).show();					
+					Toast.LENGTH_LONG).show();	
+					Intent it = new Intent(this, MainActivity.class);
+					startActivity(it);
 				}
 			}else{
 				Toast.makeText(this, "Criando usuário...",

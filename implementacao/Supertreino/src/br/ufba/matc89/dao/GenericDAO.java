@@ -11,7 +11,10 @@ import android.util.Log;
 
 public abstract class GenericDAO extends SQLiteOpenHelper{
 	
-	protected static final int DB_VERSION = 9;
+	//Cada alteração na estrutura das tabelas(definicao de colunas) esse valor deve ser incrementado
+	//para que a api do android entenda que o banco foi alterado e remova as definições antigas atualizando
+	//com as novas.
+	protected static final int DB_VERSION = 18;
 	
 	protected static final String DB_NAME = "supertreino";
 	
@@ -32,14 +35,14 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 							+"login text not null,"
 							+"senha text not null,"
 							+"email text not null"
-							+")");
+							+");");
 		
 		SQL_COMMAND_CREATE.add("create table atleta("
 							+"id integer primary key autoincrement,"
 							+"id_usuario integer not null,"
 							+"genero text not null,"
 							+"foreign key(id_usuario) references usuario(id)"							
-							+")");
+							+");");
 		
 		SQL_COMMAND_CREATE.add("create table medida ("
 							+"id integer primary key autoincrement,"
@@ -48,10 +51,105 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 							+"altura integer,"
 							+"cintura integer,"
 							+"quadril integer,"
+							+"subscapular integer,"
+							+"tripicial integer,"
+							+"peitoral integer,"
+							+"axilar_media integer,"
+							+"supra_iliaca integer,"
+							+"abdominal integer,"
+							+"antebraco integer,"
 							+"data_afericao date,"
 							+"foreign key(id_atleta) references atleta(id)"
-							+")");
+							+");");
 		
+		SQL_COMMAND_CREATE.add("create table dieta("
+							+"id integer primary key autoincrement,"
+							+"id_atleta integer not null,"
+							+"nome text,"
+							+"foreign key(id_atleta) references atleta(id)"
+							+");");
+		
+		SQL_COMMAND_CREATE.add("create table alimento( "
+							+"_id integer primary key autoincrement,"
+							+"nome text not null,"
+							+"fonte text,"
+							+"carboidrato real,"
+							+"proteina real,"
+							+"gordura real,"
+							+"caloria real"
+							+");");
+			
+				
+		SQL_COMMAND_CREATE.add("create table refeicao("
+							+"id integer primary key autoincrement,"
+							+"nome text,"
+							+");");
+				
+		SQL_COMMAND_CREATE.add("create table refeicao_alimento("
+				+"id integer primary key autoincrement,"
+				+"id_refeicao integer not null,"
+				+"id_alimento integer not null,"
+				+"foreign key(id_refeicao) references refeicao(id),"
+				+"foreign key(id_alimento) references alimento(id)"
+				+");");	
+		
+		SQL_COMMAND_CREATE.add("create table dieta_refeicao("
+				+"id integer primary key autoincrement,"
+				+"id_dieta integer not null,"
+				+"id_refeicao integer not null,"
+				+"foreign key(id_dieta) references dieta(id),"
+				+"foreign key(id_refeicao) references refeicao(id)"
+				+");");	
+		
+		SQL_COMMAND_CREATE.add("create table ciclo("
+							+"id integer primary key autoincrement"								
+							+");");
+		
+		SQL_COMMAND_CREATE.add("create table semana("
+							+"id integer primary key autoincrement,"
+							+"id_ciclo integer not null,"
+							+"numero integer not null,"
+							+"metodologia text,"
+							+"foreign key(id_ciclo) references ciclo(id)"
+							+");");
+		
+		SQL_COMMAND_CREATE.add("create table dia("
+							+"id integer primary key autoincrement,"
+							+"id_semana integer not null,"
+							+"dia_calendario integer not null,"
+							+"nome text not null,"
+							+"foreign key(id_semana) references semana(id)"
+							+");");
+		
+		SQL_COMMAND_CREATE.add("create table treino("
+							+"id integer primary key autoincrement,"
+							+"id_dia integer not null,"
+							+"nome text not null,"
+							+"foreign key(id_dia) references dia(id)"
+							+");");
+		
+		SQL_COMMAND_CREATE.add("create table exercicio("
+							+"id integer primary key autoincrement,"
+							+"id_treino integer not null,"
+							+"nome text not null,"
+							+"qnt_serie integer,"
+							+"qnt_repeticao text,"
+							+"foreign key(id_treino) references treino(id)"
+							+");");
+		
+		//O add de remocao deve seguir a ordem de dependencia entre as tabelas.
+		//A primeira tabela a ser deletada deve ser aquela da qual nenhuma dependa,
+		//ou seja, aquela que não seja referenciada por nenhuma, e segue
+		//a ordem inversa do add da criacao.
+		SQL_COMMAND_DELETE.add("drop table if exists exercicio");
+		SQL_COMMAND_DELETE.add("drop table if exists treino");
+		SQL_COMMAND_DELETE.add("drop table if exists dia");
+		SQL_COMMAND_DELETE.add("drop table if exists semana");
+		SQL_COMMAND_DELETE.add("drop table if exists ciclo");		
+		
+		SQL_COMMAND_DELETE.add("drop table if exists refeicao");
+		SQL_COMMAND_DELETE.add("drop table if exists alimento");
+		SQL_COMMAND_DELETE.add("drop table if exists dieta");
 		SQL_COMMAND_DELETE.add("drop table if exists medida");
 		SQL_COMMAND_DELETE.add("drop table if exists atleta");
 		SQL_COMMAND_DELETE.add("drop table if exists usuario");
@@ -102,9 +200,4 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 		ErroUtil.erroMensagem = msg;
 		ErroUtil.erroLocal = local;
 	}
-	
-	
-	
-	
-	
 }

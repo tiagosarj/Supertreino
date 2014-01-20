@@ -1,70 +1,69 @@
 package br.ufba.matc89;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import br.ufba.matc89.model.Alimento;
+import br.ufba.matc89.dao.AlimentoDAO;
+import br.ufba.matc89.adapter.AlimentoCursorAdapter;
 
-public class AlimentoActivity extends Activity implements OnItemClickListener {
+public class AlimentoActivity extends Activity {
 
-	ListView listViewAlimento;
 	Button addAlimentoButton;
+	AlimentoDAO dbAlimento;
+	
+	private AlimentoCursorAdapter alimentoAdapter;
+	private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_alimento);
+		
+		dbAlimento = new AlimentoDAO(this);
 
-        List<Alimento> listaAlimento = criarAlimentos();
-        ArrayAdapter<Alimento> ad = new AlimentoAdapter(this, R.layout.layout_alimento, listaAlimento);
-        listViewAlimento = (ListView) findViewById(R.id.listViewAlimento);
-        listViewAlimento.setAdapter(ad);
-
-        listViewAlimento.setOnItemClickListener(this);
-        registerForContextMenu(listViewAlimento);
+		listView = (ListView) findViewById(R.id.listViewAlimento);
+		listView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+				openContextMenu(view);
+			}
+		});
+		registerForContextMenu(listView);
         
+        // Database query can be a time consuming task ..
+        // so its safe to call database query in another thread
+        // Handler, will handle this stuff for you
+  
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                alimentoAdapter = new AlimentoCursorAdapter(AlimentoActivity.this, dbAlimento.getAllData());
+                listView.setAdapter(alimentoAdapter);
+            }
+        });
+
         addAlimentoButton = (Button) findViewById(R.id.adicionar);
         addAlimentoButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Intent changeActivity = new Intent( AlimentoActivity.this, AddEditAlimentoActivity.class);
+				Intent changeActivity = new Intent( AlimentoActivity.this, AlimentoAddEditActivity.class);
 				startActivityForResult(changeActivity, 1);
 			}
 		});
         
     }
-  
-    private List<Alimento> criarAlimentos(){
-        List<Alimento> p = new ArrayList<Alimento>();
-        p.add(new Alimento("Carne de vaca","Protéica"));
-        p.add(new Alimento("Arroz","Glicêmica"));
-        p.add(new Alimento("Feijão","Protéica"));
-        return p; 
-    }
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.alimento, menu);
-		return true;
-	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo){
@@ -75,26 +74,33 @@ public class AlimentoActivity extends Activity implements OnItemClickListener {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item){
+		AdapterView.AdapterContextMenuInfo info =
+		          (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 		switch(item.getItemId()){
 			case R.id.editar:
-				Intent changeActivity = new Intent( AlimentoActivity.this, AddEditAlimentoActivity.class);
+				Intent changeActivity = new Intent( AlimentoActivity.this, AlimentoAddEditActivity.class);
+				changeActivity.putExtra("br.ufba.matc89.id_alimento", info.id);
 				startActivityForResult(changeActivity, 1);
 				return true;
 			case R.id.excluir:
-				Toast.makeText(AlimentoActivity.this, "Item excluído", Toast.LENGTH_LONG).show();
+				dbAlimento.delete_byID(info.id);
+				//Toast.makeText(AlimentoActivity.this, "Item excluído", Toast.LENGTH_LONG).show();
+				alimentoAdapter.changeCursor(dbAlimento.getAllData());
 				return true;
 			default:
 				return super.onContextItemSelected(item);
 		}
 	}
 	
-	public void onItemClick(View v){
-		openContextMenu(v);
-	}
-
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		
+	public void onResume(){
+		super.onResume();
+		dbAlimento.openToRead();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		dbAlimento.close();
 	}
 }

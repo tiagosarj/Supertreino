@@ -1,19 +1,36 @@
 package br.ufba.matc89.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import br.ufba.matc89.R;
 
 public class DateUtil extends Activity{
 
 	public static java.sql.Date convertDateUtil2DateSql(java.util.Date date){
 		java.sql.Date dataSql = new java.sql.Date(date.getTime());
 		return dataSql;
+	}
+	
+	public static Date getDate(String strDate){
+		
+		Locale locale = new Locale("pt", "BR");
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", locale);  
+	    Date data = new Date();
+		
+	    try {
+	    	data = new java.sql.Date(format.parse(strDate).getTime());
+		
+		} catch (ParseException e) {			
+			e.printStackTrace();
+		}  
+		
+	    return data; 
 	}
 	
 	public static String getDataSimples(Date data){
@@ -34,6 +51,17 @@ public class DateUtil extends Activity{
 		
 		nascimentoMask = Mascara.aplicarMascara(mascara, data);
 		data.addTextChangedListener(nascimentoMask);
+	}
+	
+	public static Date getMaiorData(List<Date> datas){
+		Date dataAtual = datas.get(0);		
+		
+		for(Date d:datas){
+			if(d.after(dataAtual)){
+				dataAtual = d;				
+			}	
+		}
+		return dataAtual;
 	}
 	
 	/*public static java.sql.Date formatarDdMMyyy(java.sql.Date date){

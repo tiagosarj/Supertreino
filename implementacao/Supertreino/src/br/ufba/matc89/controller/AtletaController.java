@@ -1,11 +1,13 @@
 package br.ufba.matc89.controller;
 
-import android.app.Activity;
+import java.util.List;
+
 import android.content.Context;
 import br.ufba.matc89.dao.AtletaDAO;
 import br.ufba.matc89.model.Atleta;
+import br.ufba.matc89.model.Entity;
 
-public class AtletaController extends Activity implements Controller{
+public class AtletaController implements Controller<Atleta>{
 	public static Atleta atleta = new Atleta("");
 	
 	public boolean save(Context ctx){
@@ -21,18 +23,6 @@ public class AtletaController extends Activity implements Controller{
 		return sucess;
 	}
 
-	@Override
-	public void get(long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void getList(String[] where) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public Atleta get(Context ctx){
 		
 		AtletaDAO dAtleta = new AtletaDAO(ctx);		
@@ -53,7 +43,27 @@ public class AtletaController extends Activity implements Controller{
 		
 		atleta.setHistoricoMedidas(medidaControl.get(atleta, ctx));	
 		
+		atleta.setMedidaAtual(MedidaController.getMedidaAtual(atleta.getHistoricoMedidas()));
+		
 		
 		return atleta;
 	}
+
+	@Override
+	public Atleta get(long id, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Atleta get(Atleta entity, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Atleta> getList(Atleta entity, Context context) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 }

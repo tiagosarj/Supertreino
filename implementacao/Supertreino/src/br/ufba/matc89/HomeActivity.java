@@ -87,6 +87,8 @@ public class HomeActivity extends Activity {
 	}
 	
 	public void openNoticias(){
+		Intent intent = new Intent(this, NoticiaActivity.class);
+		startActivity(intent);
 		
 	}
 	

@@ -60,9 +60,7 @@ public class UsuarioDAO extends GenericDAO{
 			setErro("Erro no banco. Os dados de usuario não foram salvos", "insert");
 		}
 		return sucess;
-	}
-	
-	
+	}	
 	
 	public boolean update(Usuario usuario){
 		boolean sucess = false;

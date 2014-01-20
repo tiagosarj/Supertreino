@@ -1,0 +1,137 @@
+package br.ufba.matc89.dao;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import br.ufba.matc89.controller.AtletaController;
+import br.ufba.matc89.model.Atleta;
+import br.ufba.matc89.model.Dieta;
+import br.ufba.matc89.model.Refeicao;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+
+public class RefeicaoDAO extends GenericDAO{
+
+	public RefeicaoDAO(Context ctx) {
+		super(ctx,DB_NAME,DB_VERSION,SQL_COMMAND_CREATE, SQL_COMMAND_DELETE);		
+	}
+	
+	public long save(Refeicao refeicao){
+		//add breakpoint aqui
+		boolean sucess = false;
+		long id = refeicao.getId();
+		
+		if(id > 0){
+			sucess = update(refeicao);
+		}else{
+			
+			id = insert(refeicao);
+		}
+		
+		return id;
+	}
+	
+	private long insert(Refeicao refeicao) {
+		boolean sucess = false;
+		
+		ContentValues values = new ContentValues();
+		values = getValues(refeicao);
+		values.put("id_atleta", AtletaController.atleta.getId());
+		long id = db.insert(TABLE_NAME, null, values);
+		if(id == 0){
+			setErro("Erro no banco. Os dados de dieta não foram salvos", "insert");
+		}	
+		return id;
+	}
+
+	public boolean update(Refeicao refeicao){
+		boolean sucess = false;
+		
+		ContentValues values = new ContentValues();
+		
+		values = getValues(refeicao);
+		String where = "id=?";
+		String[] whereArgs = new String[]{String.valueOf(refeicao.getId())};
+		
+		if(db.update(TABLE_NAME, values, where, whereArgs)>0){
+			sucess = true;
+		}else{
+			setErro("Nenhum registro foi atualizado", "Dieta.update");			
+		}
+		
+		return sucess;
+	}
+	
+	public List<Dieta> getList(Atleta atleta){
+		
+		List<Dieta> dietas = new ArrayList<Dieta>();
+		String where = "id_atleta="+atleta.getId();
+		dietas = getList(where);
+				
+		return dietas;
+	}	
+	
+	public List<Dieta> getList(String where){
+		
+		List<Dieta> dietas = new ArrayList<Dieta>();
+		
+		Cursor c = db.query(TABLE_NAME, null, where, null, null, null, null);
+				
+		if(c.getCount() > 0){
+			c.moveToFirst();
+			for(int i = 0; i < c.getCount(); i++){
+				dietas.add(getRefeicaoByRegistro(c));
+				c.moveToNext();
+			}
+			c.close();
+		}	
+		return dietas;
+	}
+	
+	private Dieta getRefeicaoByRegistro(Cursor c){
+		Dieta dieta = new Dieta();
+				
+		int indexColId = c.getColumnIndex("id");
+		int indexColNome = c.getColumnIndex("nome");
+		
+		dieta.setId(c.getInt(indexColId));
+			
+		dieta.setNome(c.getString(indexColNome));
+			
+		return dieta;
+	}
+	
+	private ContentValues getValues(Refeicao refeicao){
+		ContentValues values = new ContentValues();
+		
+		values.put("nome", refeicao.getNome());
+		
+		return values;
+	}
+	
+	public boolean saveRefeicaoDieta(long idRefeicao, long idDieta){
+		ContentValues values = new ContentValues();
+		values.put("id_refeicao", idRefeicao);
+		values.put("id_dieta", idDieta);
+		
+		if(db.insert("dieta_refeicao", null, values)>0){
+			return true;
+		}else
+			return false;
+		
+	}
+	
+	public boolean saveAlimentoRefeicao(long idAlimento, long idRefeicao){
+		ContentValues values = new ContentValues();
+		
+		values.put("id_Alimento", idAlimento);
+		values.put("id_refeicao", idRefeicao);		
+		
+		if(db.insert("refeicao_alimento", null, values)>0){
+			return true;
+		}else
+			return false;
+	}
+}
