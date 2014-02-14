@@ -3,8 +3,11 @@ package br.ufba.matc89.controller;
 import java.util.List;
 
 import android.content.Context;
+import br.ufba.matc89.dao.DietaDAO;
 import br.ufba.matc89.dao.RefeicaoDAO;
+import br.ufba.matc89.model.Dieta;
 import br.ufba.matc89.model.Refeicao;
+import br.ufba.matc89.util.ErroUtil;
 
 public class RefeicaoController implements Controller<Refeicao>{
 	public Refeicao refeicao = new Refeicao();
@@ -22,8 +25,8 @@ public class RefeicaoController implements Controller<Refeicao>{
 
 	@Override
 	public Refeicao get(long id, Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		RefeicaoDAO dRefeicao = new RefeicaoDAO(context);		
+		return dRefeicao.get(id);
 	}
 
 	@Override
@@ -33,9 +36,17 @@ public class RefeicaoController implements Controller<Refeicao>{
 	}
 
 	@Override
-	public List<Refeicao> getList(Refeicao entity, Context context) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Refeicao> getList(Refeicao entity, Context ctx) {
+	RefeicaoDAO dRefeicao = new RefeicaoDAO(ctx);
+		
+		List<Refeicao> refeicoes = dRefeicao.getList(1L);	
+					
+		if(refeicoes.size() == 0){
+			ErroUtil.erroMensagem = "Não existe nenhuma dieta cadastrada.";
+			ErroUtil.erroLocal = "DietaController.getList";
+		}
+		
+		return refeicoes;
 	}
 	
 	public boolean saveRefeicaoDieta(Context ctx, long idDieta){
@@ -47,5 +58,16 @@ public class RefeicaoController implements Controller<Refeicao>{
 		RefeicaoDAO dRefeicao = new RefeicaoDAO(ctx);
 		return dRefeicao.saveAlimentoRefeicao(idAlimento, refeicao.getId());
 	}
-
+	
+	public boolean removerAlimentosRefeicao(Context ctx, long refeicaoId){
+		RefeicaoDAO dRefeicao = new RefeicaoDAO(ctx);
+		return dRefeicao.removerAlimentos(refeicaoId);
+		
+	}
+	
+	public boolean remover(Context ctx, long refeicaoId){
+		RefeicaoDAO dRefeicao = new RefeicaoDAO(ctx);
+		return dRefeicao.remover(refeicaoId);		
+	}
+	
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/lbNomeRefeicaoView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbNomeRefeicao" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/editBtRefeicao"
+            android:layout_width="49dp"
+            android:layout_height="43dp"
+            android:src="@drawable/edit_bt_icon" />
+
+        <ImageView
+            android:id="@+id/btRemove"
+            android:layout_width="49dp"
+            android:layout_height="43dp"
+            android:src="@android:drawable/ic_delete" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbAlimentos"
+        android:textStyle="bold" />
+   
+    <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TABELA @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+    <TableLayout
+        android:id="@+id/tbExibirAlimentos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableRow android:id="@+id/rowHeader" 
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="#0000FF">           
+
+            <TextView
+                android:id="@+id/lbNome"
+                android:text="@string/lbColNome"
+                android:width="80dp" />
+
+            <TextView
+                android:id="@+id/lbFonte"
+                android:text="@string/lbColFonte"
+                android:width="50dp" />
+
+            <TextView
+                android:id="@+id/lbCHO"
+                android:text="@string/lbColCHO"
+                android:width="30dp" />
+
+            <TextView
+                android:id="@+id/lbPtn"
+                android:text="@string/lbColPTN"
+                android:width="50dp" />
+
+           <TextView
+                android:id="@+id/Godura"
+                android:text="Gordura"
+                android:width="110dp" />
+ 
+        </TableRow>
+
+        	
+        
+    </TableLayout>
+
+</LinearLayout>

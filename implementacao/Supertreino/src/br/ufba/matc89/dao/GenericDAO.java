@@ -14,14 +14,12 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 	//Cada alteração na estrutura das tabelas(definicao de colunas) esse valor deve ser incrementado
 	//para que a api do android entenda que o banco foi alterado e remova as definições antigas atualizando
 	//com as novas.
-	protected static final int DB_VERSION = 18;
+	protected static final int DB_VERSION = 22;
 	
 	protected static final String DB_NAME = "supertreino";
 	
 	protected static List<String> SQL_COMMAND_DELETE;
-	protected static List<String> SQL_COMMAND_CREATE; 
-	protected static String TABLE_NAME;	
-	
+	protected static List<String> SQL_COMMAND_CREATE; 	
 	
 	protected SQLiteDatabase db;
 	
@@ -70,7 +68,7 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 							+");");
 		
 		SQL_COMMAND_CREATE.add("create table alimento( "
-							+"_id integer primary key autoincrement,"
+							+"id integer primary key autoincrement,"
 							+"nome text not null,"
 							+"fonte text,"
 							+"carboidrato real,"
@@ -82,7 +80,7 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 				
 		SQL_COMMAND_CREATE.add("create table refeicao("
 							+"id integer primary key autoincrement,"
-							+"nome text,"
+							+"nome text"
 							+");");
 				
 		SQL_COMMAND_CREATE.add("create table refeicao_alimento("
@@ -146,6 +144,9 @@ public abstract class GenericDAO extends SQLiteOpenHelper{
 		SQL_COMMAND_DELETE.add("drop table if exists dia");
 		SQL_COMMAND_DELETE.add("drop table if exists semana");
 		SQL_COMMAND_DELETE.add("drop table if exists ciclo");		
+		
+		SQL_COMMAND_DELETE.add("drop table if exists dieta_refeicao");
+		SQL_COMMAND_DELETE.add("drop table if exists refeicao_alimento");
 		
 		SQL_COMMAND_DELETE.add("drop table if exists refeicao");
 		SQL_COMMAND_DELETE.add("drop table if exists alimento");

@@ -12,7 +12,8 @@ public class DietaController implements Controller<Dieta>{
 	
 	
 	public DietaController(){
-		dieta.setNome("Café da Manhã");		
+		dieta.setNome("Básica");	
+		
 	}
 	@Override
 	public boolean save(Context ctx) {
@@ -38,8 +39,14 @@ public class DietaController implements Controller<Dieta>{
 	}
 	@Override
 	public Dieta get(long id, Context context) {
-		// TODO Auto-generated method stub
-		return null;
+		DietaDAO dDieta = new DietaDAO(context);
+		Dieta dieta = dDieta.getById(id);
+		if(dieta.getId() == 0){
+			dieta = new Dieta();
+			dieta.setNome("Hiperproteíca");
+			dieta.setId(dDieta.save(dieta));
+		}
+		return dieta;
 	}
 	@Override
 	public Dieta get(Dieta entity, Context context) {

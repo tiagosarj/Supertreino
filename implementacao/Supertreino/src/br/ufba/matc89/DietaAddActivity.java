@@ -36,6 +36,25 @@ public class DietaAddActivity extends Activity {
 			e.printStackTrace();
 		}
 		
+		tLayout = (TableLayout) findViewById(R.id.tlAlimentos);
+		
+		Long id;
+		Bundle extras = getIntent().getExtras();
+		if(extras != null){
+			id = extras.getLong("refeicao_id");
+			if(id != null){
+			
+				RefeicaoController cRefeicao = new RefeicaoController();
+				Refeicao refeicao = cRefeicao.get(id, this);
+				AlimentoController cAlimento = new AlimentoController();
+				tabelaAlimentos = cAlimento.getList(refeicao, this);
+				
+			    final EditText etRefeicao = (EditText)findViewById(R.id.txtNome);
+			    etRefeicao.setText(refeicao.getNome());
+			    
+			    exibirTabela();
+			}			
+		}
 		initDietas();
 		
 		final EditText qnt = (EditText)findViewById(R.id.etQnt);
@@ -53,8 +72,9 @@ public class DietaAddActivity extends Activity {
 		final ImageButton imgAdd = (ImageButton)findViewById(R.id.imgAdd);
 		final ImageButton imgSave = (ImageButton)findViewById(R.id.imgSave);
 		final Spinner viewAlimentos = (Spinner) findViewById(R.id.cbAlimentos);
+		final ImageButton imgRm = (ImageButton)findViewById(R.id.rm_bt_icon);
 				
-		tLayout = (TableLayout) findViewById(R.id.tlAlimentos);
+		
 		
 		
 		imgAdd.setOnClickListener(
@@ -63,51 +83,47 @@ public class DietaAddActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						Alimento a = alimentos.get(viewAlimentos.getSelectedItemPosition());
-						showAlimentoInTable(a);
-						
+						addAlimentoInTable(a);						
 					}
 				});
+		
 		imgSave.setOnClickListener(
 				new View.OnClickListener() {
 					
 					@Override
-					public void onClick(View v) {
-						
-							
-						processSave();
-						
-						
-						
-						
+					public void onClick(View v) {						
+						if(processSave()){
+							clean();
+						}
 					}
-				});
-				
+				});				
 		
-//		findViewById(R.id.btHome).setOnClickListener(
-//				new View.OnClickListener() {
-//					@Override
-//					public void onClick(View view) {
-//						
-//						openTelaPrincipal();						
-//					}
-//				});
-		
+		imgRm.setOnClickListener(
+				new View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {							
+							cleanTable();						
+					}
+				});		
 		
 	}
 		
 	private void initDietas(){
 		AlimentoController alimentoC = new AlimentoController();
-		alimentos = alimentoC.getList(null, this);
-		
+		alimentos = alimentoC.getList(this);
+		if(alimentos == null){
+			Toast.makeText(this, "Para acessar essa tela é necessário realizar cadastro de alimento...",
+					Toast.LENGTH_LONG).show();
+		}
 		ArrayAdapter<Alimento> adp = new ArrayAdapter<Alimento>(this,android.R.layout.simple_dropdown_item_1line, alimentos);
 		Spinner viewAlimentos = (Spinner) findViewById(R.id.cbAlimentos);
 		viewAlimentos.setAdapter(adp);
 	}
 	
-	private void showAlimentoInTable(Alimento a){
+	private void addAlimentoInTable(Alimento a){
 			   	
-	   tabelaAlimentos.add(a);
-	   
+	   tabelaAlimentos.add(a);	   
 	  
 	   
 	    View linha1 = (View) findViewById(R.id.linha1);
@@ -120,52 +136,10 @@ public class DietaAddActivity extends Activity {
 		tLayout.addView(row1);
 		tLayout.addView(linha1);
 		tLayout.addView(row2);
-		tLayout.addView(linha2);
+		tLayout.addView(linha2);		
 		
-		
-        for(int i = 0; i < tabelaAlimentos.size(); i++){
-        	TableRow tr = new TableRow(this);
-        	tr.setId(100+i);
-        	tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        	
-        	TextView nomeAlimento = new TextView(this);
-        	nomeAlimento.setId(200+i);
-        	nomeAlimento.setText(tabelaAlimentos.get(i).getNome());
-        	nomeAlimento.setTextColor(Color.BLACK);
-        	nomeAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        	
-        	tr.addView(nomeAlimento);
-        	
-        	TextView fonteAlimento = new TextView(this);
-        	fonteAlimento.setId(200+i);
-        	fonteAlimento.setText(tabelaAlimentos.get(i).getFonte());
-        	fonteAlimento.setTextColor(Color.BLACK);
-        	fonteAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        	
-        	tr.addView(fonteAlimento);
-        	
-        	TextView choAlimento = new TextView(this);
-        	choAlimento.setId(200+i);
-        	choAlimento.setText(tabelaAlimentos.get(i).getCarboidrato().toString());
-        	choAlimento.setTextColor(Color.BLACK);
-        	choAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        	
-        	tr.addView(choAlimento);
-        	
-        	TextView ptnAlimento = new TextView(this);
-        	ptnAlimento.setId(200+i);
-        	ptnAlimento.setText(tabelaAlimentos.get(i).getProteina().toString());
-        	ptnAlimento.setTextColor(Color.BLACK);
-        	ptnAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        	
-        	tr.addView(ptnAlimento);
-        	
-        	 tLayout.addView(tr, new  TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-        			 TableLayout.LayoutParams.WRAP_CONTENT));
-        	 
-        	 tLayout.requestLayout();
-        	
-        } 
+		exibirTabela();
+       
         
 	}
 	private boolean processSave(){
@@ -188,17 +162,103 @@ public class DietaAddActivity extends Activity {
 			Refeicao refeicao = new Refeicao();
 			refeicao.setNome(nomeRefeicao);
 			RefeicaoController cRefeicao = new RefeicaoController();
+			Long id;
+			Bundle extras = getIntent().getExtras();
+			if(extras != null){
+				id = extras.getLong("refeicao_id");
+				refeicao.setId(id);
+				cRefeicao.removerAlimentosRefeicao(this, id);
+			}
 			cRefeicao.refeicao = refeicao;
 			if(cRefeicao.save(this)){
 				if(cRefeicao.saveRefeicaoDieta(this, dieta.getId())){
-					for (Alimento a : alimentos) {
+					for (Alimento a : tabelaAlimentos) {
 						sucess = cRefeicao.saveAlimentoRefeicao(this, a.getId());
-					}
-					
+					}					
 				}
 			}			
 		}
+		String mensagem = "Refeição adicionada com sucesso.";
+		if(!sucess){
+			mensagem = "Erro no cadastro da refeição.";
+		}
+		
+		Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
 		return sucess;
 	}
 	
+	private void clean(){
+				   
+		    final EditText qnt = (EditText)findViewById(R.id.etQnt);
+		    qnt.setText("");
+		    
+		    final EditText etRefeicao = (EditText)findViewById(R.id.txtNome);
+		    etRefeicao.setText("");
+		    cleanTable();
+		    
+	}
+	
+	private void cleanTable(){
+		
+		alimentos.clear();
+		
+		View linha1 = (View) findViewById(R.id.linha1);
+		View linha2 = (View) findViewById(R.id.linha2);
+		TableRow row1 = (TableRow) findViewById(R.id.tableRow1);
+		TableRow row2 = (TableRow) findViewById(R.id.tableRow2);
+		
+		tLayout.removeAllViews();
+        
+		tLayout.addView(row1);
+		tLayout.addView(linha1);
+		tLayout.addView(row2);
+		tLayout.addView(linha2);
+		
+		tLayout.requestLayout();
+	}
+	
+	public void exibirTabela(){
+		 for(int i = 0; i < tabelaAlimentos.size(); i++){
+	        	TableRow tr = new TableRow(this);
+	        	tr.setId(100+i);
+	        	tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+	        	
+	        	TextView nomeAlimento = new TextView(this);
+	        	nomeAlimento.setId(200+i);
+	        	nomeAlimento.setText(tabelaAlimentos.get(i).getNome());
+	        	nomeAlimento.setTextColor(Color.BLACK);
+	        	nomeAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+	        	
+	        	tr.addView(nomeAlimento);
+	        	
+	        	TextView fonteAlimento = new TextView(this);
+	        	fonteAlimento.setId(200+i);
+	        	fonteAlimento.setText(tabelaAlimentos.get(i).getFonte());
+	        	fonteAlimento.setTextColor(Color.BLACK);
+	        	fonteAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+	        	
+	        	tr.addView(fonteAlimento);
+	        	
+	        	TextView choAlimento = new TextView(this);
+	        	choAlimento.setId(200+i);
+	        	choAlimento.setText(tabelaAlimentos.get(i).getCarboidrato().toString());
+	        	choAlimento.setTextColor(Color.BLACK);
+	        	choAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+	        	
+	        	tr.addView(choAlimento);
+	        	
+	        	TextView ptnAlimento = new TextView(this);
+	        	ptnAlimento.setId(200+i);
+	        	ptnAlimento.setText(tabelaAlimentos.get(i).getProteina().toString());
+	        	ptnAlimento.setTextColor(Color.BLACK);
+	        	ptnAlimento.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.FILL_PARENT));
+	        	
+	        	tr.addView(ptnAlimento);
+	        	
+	        	 tLayout.addView(tr);//, new  TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+	        	 
+	        	 tLayout.requestLayout();
+	        	
+	        } 
+	}
 }

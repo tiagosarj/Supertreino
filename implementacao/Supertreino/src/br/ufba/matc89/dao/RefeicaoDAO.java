@@ -1,19 +1,18 @@
 package br.ufba.matc89.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import br.ufba.matc89.controller.AtletaController;
-import br.ufba.matc89.model.Atleta;
-import br.ufba.matc89.model.Dieta;
-import br.ufba.matc89.model.Refeicao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import br.ufba.matc89.model.Dieta;
+import br.ufba.matc89.model.Refeicao;
 
 public class RefeicaoDAO extends GenericDAO{
-
+	
+	static final String TABLE_NAME = "refeicao";
+	
 	public RefeicaoDAO(Context ctx) {
 		super(ctx,DB_NAME,DB_VERSION,SQL_COMMAND_CREATE, SQL_COMMAND_DELETE);		
 	}
@@ -38,7 +37,7 @@ public class RefeicaoDAO extends GenericDAO{
 		
 		ContentValues values = new ContentValues();
 		values = getValues(refeicao);
-		values.put("id_atleta", AtletaController.atleta.getId());
+		//values.put("id_atleta", AtletaController.atleta.getId());
 		long id = db.insert(TABLE_NAME, null, values);
 		if(id == 0){
 			setErro("Erro no banco. Os dados de dieta não foram salvos", "insert");
@@ -58,49 +57,64 @@ public class RefeicaoDAO extends GenericDAO{
 		if(db.update(TABLE_NAME, values, where, whereArgs)>0){
 			sucess = true;
 		}else{
-			setErro("Nenhum registro foi atualizado", "Dieta.update");			
+			setErro("Nenhum registro foi atualizado", "Refeicao.update");			
 		}
 		
 		return sucess;
 	}
 	
-	public List<Dieta> getList(Atleta atleta){
+	public List<Refeicao> getList(Long dietaId){
 		
-		List<Dieta> dietas = new ArrayList<Dieta>();
-		String where = "id_atleta="+atleta.getId();
-		dietas = getList(where);
+		List<Refeicao> refeicoes = new ArrayList<Refeicao>();
+		
+		List<Long> ids = getIdsRefeicoesPorDieta(dietaId);
+		
+		for(int i = 0;i < ids.size(); i++){
+			String where = "id="+ids.get(i);
+			refeicoes.add(get(where));			
+		}		
 				
-		return dietas;
-	}	
-	
-	public List<Dieta> getList(String where){
-		
-		List<Dieta> dietas = new ArrayList<Dieta>();
-		
-		Cursor c = db.query(TABLE_NAME, null, where, null, null, null, null);
-				
-		if(c.getCount() > 0){
-			c.moveToFirst();
-			for(int i = 0; i < c.getCount(); i++){
-				dietas.add(getRefeicaoByRegistro(c));
-				c.moveToNext();
-			}
-			c.close();
-		}	
-		return dietas;
+		return refeicoes;
 	}
 	
-	private Dieta getRefeicaoByRegistro(Cursor c){
-		Dieta dieta = new Dieta();
+	public Refeicao get(Long id){
+		return get("id="+id);
+	}
+	
+	public Refeicao get(String where){
+		
+		Refeicao refeicao = new Refeicao();
+		
+		Cursor c = db.query("refeicao", null, where, null, null, null, null);
+		
+		if (c.getCount() > 0) {
+			c.moveToFirst();			
+			
+			refeicao = getRefeicaoByRegistro(c);
+					
+			c.close();
+		}
+		return refeicao;
+	}
+	
+	private Refeicao getRefeicaoByRegistro(Cursor c){
+		Refeicao refeicao = new Refeicao();
 				
 		int indexColId = c.getColumnIndex("id");
 		int indexColNome = c.getColumnIndex("nome");
 		
-		dieta.setId(c.getInt(indexColId));
+		refeicao.setId(c.getLong(indexColId));
 			
-		dieta.setNome(c.getString(indexColNome));
+		refeicao.setNome(c.getString(indexColNome));
 			
-		return dieta;
+		return refeicao;
+	}
+	
+	private Long getIdRefeicaoByRegistro(Cursor c){
+						
+		int indexColId = c.getColumnIndex("id_refeicao");
+					
+		return c.getLong(indexColId);
 	}
 	
 	private ContentValues getValues(Refeicao refeicao){
@@ -133,5 +147,49 @@ public class RefeicaoDAO extends GenericDAO{
 			return true;
 		}else
 			return false;
+	}
+	
+	public List<Long> getIdsRefeicoesPorDieta(Long dietaId){
+		List<Long> idsRefeicoes =  new ArrayList<Long>();
+		String where = "id_dieta="+dietaId;
+		Cursor c = db.query("dieta_refeicao", null, where, null, null, null, null);
+		if (c.getCount() > 0) {
+			c.moveToFirst();
+			for (int i = 0; i < c.getCount(); i++) {
+
+				idsRefeicoes.add(getIdRefeicaoByRegistro(c));
+				c.moveToNext();
+			}
+			c.close();
+		}
+		return idsRefeicoes;
+		
+	}
+	/*public void close(){
+		db.close();
+	}*/
+
+	public boolean removerAlimentos(long refeicaoId) {
+		
+		String where = "id_refeicao=?";
+		String[] whereArgs = new String[]{String.valueOf(refeicaoId)};
+		
+		if(db.delete("refeicao_alimento", where, whereArgs) > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public boolean remover(long refeicaoId) {
+		
+		String where = "id=?";
+		String[] whereArgs = new String[]{String.valueOf(refeicaoId)};
+		
+		if(db.delete("refeicao", where, whereArgs) > 0){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
